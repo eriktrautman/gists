@@ -1,0 +1,13 @@
+<% if current_user %>
+  <ul>
+    <li>
+      <%= link_to "#{current_user}", user_path(current_user) %>
+    </li>
+    <li>
+      <%= link_to "Gists", gists_path %>
+    </li>
+    <li>
+      <%= link_to "Logout", logout_path, method: :delete %>
+    </li>
+  <ul>
+<% end %>

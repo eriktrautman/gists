@@ -1,0 +1,9 @@
+<h1>LOGIN</h1>
+
+<%= form_tag login_path do %>
+  <%= label_tag :user_name %>
+  <%= text_field_tag :user_name %>
+  <%= submit_tag "Sign In" %>
+<% end %>
+
+<%= link_to "Sign Up", signup_path %>
