@@ -1,2 +1,6 @@
-<p><%= link_to gist, gist_path(gist) %></p>
+<div>
+  <%= link_to gist, gist_path(gist) %>
+  <%= button_to 'delete', gist_path(gist), method: :delete, remote: true,
+      class: 'delete-button' %>
+</div>
 

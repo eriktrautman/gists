@@ -18,7 +18,7 @@ $(function () {
   $.get(
     '/tags',
     function (data) {
-      tags = data.map(function (tag) {
+      Gist.allTags = data.map(function (tag) {
         return tag.name;
       });
     }

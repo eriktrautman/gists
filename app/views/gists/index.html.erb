@@ -1,3 +1,13 @@
 <h1>Your Gists</h1>
 <%= render @gists %>
 <%= link_to "New Gist", new_gist_path %>
+
+<script type='text/javascript'>
+  $(function () {
+    console.log($('.delete-button'));
+    $('form.button_to').on('ajax:success', function (e) {
+      console.log('e');
+      $(e.target).parents('div').remove()
+    })
+  })
+</script>

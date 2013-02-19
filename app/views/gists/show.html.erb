@@ -13,6 +13,7 @@
 
 <script type="text/javascript">
   $(function(){
+    /////////////////////// Favorite/Unfavorite
     var favoriteButton =
       $('<%= button_to "Favorite", gist_favorite_path(@gist), remote: true %>');
     var unfavoriteButton =
@@ -29,53 +30,21 @@
 
     $('form.button_to').on('ajax:success', function () {
       $('form.button_to').toggle();
-    })
-
-    // grab all tags for this gist
-    $.get('/gists/<%= @gist.id %>/taggings', function(data){
-      tag_list = $('<ul></ul>');
-      data.forEach(function(datum){
-        tag_list.append('<li>' + datum.name + '</li>');
-      });
-      $("#tags").append(tag_list);
     });
 
-    // Listen for keypress on input field
-    $('input#tag-box').keyup(function (e) {
-      if (e.which == 13){
-        var tag_name = $('input#tag-box').val();
-        $('input#tag-box').val('');
-        $.post(
-          '/gists/<%= @gist.id %>/taggings',
-          {tag_name: tag_name},
-          function (resp) {
-            if (resp.message) {
-            } else {
-              $('#tags ul').append('<li>' + resp.name + '</li>');
-            }
-          }
-        )
-      } else {
-        if ($('#tag-list').length) {
-          var dropdown = $('#tag-list ul');
-        } else {
-          var dropdown = $('<div id="tag-list"></div>');
-          $("#new-tag-form").append($(dropdown));
-          $("#tag-list").append("<ul></ul>");
-        }
 
-        $('#tag-list li').remove()
-        var current_val = $('input#tag-box').val();
+    ////////////////////// Tagging
+    Gist.gist_id = <%= @gist.id %>
+    Gist.getTagsForGist(function (tags) {
+        Gist.buildTagList(tags);
+    });
 
-        tags.forEach(function (name) {
-          regexp = new RegExp('^' + current_val);
-          if (name.match(regexp)) {
-            $('#tag-list ul').append($('<li>' + name + '</li>'));
-          }
-        }
-        )
-      }
-    })
+    $('input#tag-box').keyup(Gist.tagBoxHandler.bind(Gist))
+                      .focus(Gist.showDropdown.bind(Gist))
+                      .blur(function () {
+                        setTimeout(Gist.hideDropdown.bind(Gist), 200);
+                      });
+
   });
 
 </script>

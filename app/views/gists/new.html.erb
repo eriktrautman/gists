@@ -1,6 +1,7 @@
 <h1>Create a Gist</h1>
 <%= simple_form_for @gist do |gist| %>
   <%= gist.input :title %>
+  <%= gist.association :tags %>
   <%= gist.fields_for :files do |file| %>
     <div class="gist-file">
       <%= file.input :body, as: :text %>

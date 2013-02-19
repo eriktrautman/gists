@@ -27,4 +27,9 @@ class GistsController < ApplicationController
   def show
     @gist = Gist.find(params[:id])
   end
+
+  def destroy
+    gist = Gist.find(params[:id]).destroy
+    render :json => gist
+  end
 end
