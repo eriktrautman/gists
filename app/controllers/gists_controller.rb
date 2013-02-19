@@ -10,17 +10,25 @@ class GistsController < ApplicationController
   end
 
   def new
-    @gist = Gist.new
-    1.times { @gist.files.build }
+    gist = current_user.gists.create(title: "untitled gist")
+    redirect_to edit_gist_path(gist)
   end
 
-  def create
-    @gist = current_user.gists.build(params[:gist])
+  def edit
+    @gist = Gist.find(params[:id])
+    1.times { @gist.files.build }
+    flash[:success] = "Your gist has been created. Go ahead and edit it, and it'll
+automatically be saved for you. Click done to go back to all your gists."
+  end
+
+  def update
+    @gist = Gist.find(params[:id])
+    @gist.assign_attributes(params[:gist])
     if @gist.save
-      redirect_to @gist
+      render nothing: true
     else
-      flash[:error] = "Something went wrong. Please review your gist."
-      render 'new'
+      flash[:error] = "Something went wrong with autosaving. Please review your gist."
+      render :json => { message: "Fail" }
     end
   end
 

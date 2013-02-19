@@ -1,6 +1,10 @@
 todo.txt
 
-styling
-tag dropdown listerners for submit on click
+X  styling
+X  tag dropdown listerners for submit on click
+X  new gist form -- add tags @ gist creation (comma-separated tags)
 
-new gist form -- add tags @ gist creation (comma-separated tags)
+delete tag
+save while typing
+up/down vote (have to make gists public => redo 'gists#index')
+comments on gists

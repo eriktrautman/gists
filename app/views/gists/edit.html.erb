@@ -1,0 +1,32 @@
+<%= simple_form_for @gist, remote: true do |gist| %>
+  <%= gist.input :title %>
+  <%= gist.association :tags %>
+  <%= gist.fields_for :files do |file| %>
+    <div class="gist-file">
+      <%= file.input :body, as: :text %>
+      <a href="#">remove</a>
+    </div>
+  <% end %>
+  <a href="#" id="add-gist-file-form">Add File</a>
+  <%= gist.submit "Create Gist" %>
+<% end %>
+
+<script>
+  $(function(){
+    $("div.gist-file a").click(function(e){
+      $(e.target).parent().remove();
+    });
+    $("#add-gist-file-form").click(function(e){
+      var gist_form = $(".gist-file").first().clone();
+      var name = $(gist_form).find('textarea').attr('name');
+      var name = name.replace(/\d+/, new Date().getTime().toString());
+      $(gist_form).find('textarea').attr('name', name);
+      $(gist_form).children('a').click(function(e){
+        $(e.target).parent().remove();
+      });
+      $(this).before(gist_form);
+    });
+
+    $('form.edit_gist').keyup(gistsController.autosave);
+  });
+</script>

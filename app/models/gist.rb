@@ -19,10 +19,10 @@ class Gist < ActiveRecord::Base
     taggings.create(tag_id: tag.id).id ? tag : false
   end
 
-  def tag_ids=(ids)
-    ids.shift
-    ids.each do |id|
-      taggings.build(tag_id: id)
-    end
-  end
+  # def tag_ids=(ids)
+  #   ids.shift
+  #   ids.each do |id|
+  #     taggings.build(tag_id: id)
+  #   end
+  # end
 end

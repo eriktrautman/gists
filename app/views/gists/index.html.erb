@@ -4,9 +4,7 @@
 
 <script type='text/javascript'>
   $(function () {
-    console.log($('.delete-button'));
     $('form.button_to').on('ajax:success', function (e) {
-      console.log('e');
       $(e.target).parents('div').remove()
     })
   })

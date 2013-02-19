@@ -10,7 +10,7 @@ Gists::Application.routes.draw do
 
   resources :tags, only: [:index]
 
-  resources :gists do
+  resources :gists, except: [:create] do
     resource :favorite, only: [:create, :destroy]
     resources :taggings, only: [:create, :destroy, :index]
   end
