@@ -5,11 +5,17 @@ Gists::Application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
 
-
   resources :users, except: [:index, :new]
   get '/signup' => 'users#new'
 
-  resources :gists
+  resources :tags, only: [:index]
+
+  resources :gists do
+    resource :favorite, only: [:create, :destroy]
+    resources :taggings, only: [:create, :destroy, :index]
+  end
+
+  resources :favorites, only: [:index]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

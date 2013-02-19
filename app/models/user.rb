@@ -13,6 +13,19 @@ class User < ActiveRecord::Base
     user_name
   end
 
+  def favorite_gist(gist_id)
+    Favorite.create(user_id: self.id, gist_id: gist_id)
+  end
+
+  def unfavorite_gist(gist_id)
+    fav = Favorite.where(user_id: self.id, gist_id: gist_id).first
+    fav.destroy if fav
+  end
+
+  def favorited?(gist)
+    self.favorite_gists.include?(gist)
+  end
+
   private
 
   def set_remember_token

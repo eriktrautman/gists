@@ -4,4 +4,8 @@ class GistFile < ActiveRecord::Base
   belongs_to :gist, inverse_of: :files
 
   validates :gist, :body, presence: true
+
+  def to_s
+    body
+  end
 end

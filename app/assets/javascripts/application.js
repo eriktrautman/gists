@@ -13,3 +13,14 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+$(function () {
+  $.get(
+    '/tags',
+    function (data) {
+      tags = data.map(function (tag) {
+        return tag.name;
+      });
+    }
+  );
+});

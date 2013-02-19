@@ -1,2 +1,81 @@
 <h1><%= @gist %></h1>
+
+<div id="tags">
+  <h3>Tags:</h3>
+  <div id="new-tag-form">
+    <input id="tag-box" type="text" placeholder="Add or create tags here"></input>
+  </div>
+</div>
+
+<p><%= render @gist.files %></p>
 <%= link_to "All my gists", gists_path %>
+
+
+<script type="text/javascript">
+  $(function(){
+    var favoriteButton =
+      $('<%= button_to "Favorite", gist_favorite_path(@gist), remote: true %>');
+    var unfavoriteButton =
+      $('<%= button_to "Unfavorite", gist_favorite_path(@gist), method: :delete, remote: true %>');
+
+    favoriteButton.appendTo("body");
+    unfavoriteButton.appendTo("body");
+
+    <% if current_user.favorited?(@gist) %>
+      favoriteButton.hide();
+    <% else %>
+      unfavoriteButton.hide();
+    <% end %>
+
+    $('form.button_to').on('ajax:success', function () {
+      $('form.button_to').toggle();
+    })
+
+    // grab all tags for this gist
+    $.get('/gists/<%= @gist.id %>/taggings', function(data){
+      tag_list = $('<ul></ul>');
+      data.forEach(function(datum){
+        tag_list.append('<li>' + datum.name + '</li>');
+      });
+      $("#tags").append(tag_list);
+    });
+
+    // Listen for keypress on input field
+    $('input#tag-box').keyup(function (e) {
+      if (e.which == 13){
+        var tag_name = $('input#tag-box').val();
+        $('input#tag-box').val('');
+        $.post(
+          '/gists/<%= @gist.id %>/taggings',
+          {tag_name: tag_name},
+          function (resp) {
+            if (resp.message) {
+            } else {
+              $('#tags ul').append('<li>' + resp.name + '</li>');
+            }
+          }
+        )
+      } else {
+        if ($('#tag-list').length) {
+          var dropdown = $('#tag-list ul');
+        } else {
+          var dropdown = $('<div id="tag-list"></div>');
+          $("#new-tag-form").append($(dropdown));
+          $("#tag-list").append("<ul></ul>");
+        }
+
+        $('#tag-list li').remove()
+        var current_val = $('input#tag-box').val();
+
+        tags.forEach(function (name) {
+          regexp = new RegExp('^' + current_val);
+          if (name.match(regexp)) {
+            $('#tag-list ul').append($('<li>' + name + '</li>'));
+          }
+        }
+        )
+      }
+    })
+  });
+
+</script>
